@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, LoaderCircle, Save } from 'lucide-react';
+import { ArrowLeft, FileText, LoaderCircle, Save, UserRound } from 'lucide-react';
 import { useMemo } from 'react';
 import { useForm, type FieldPath, type SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -117,7 +117,7 @@ interface EmployeeFormProps {
 }
 
 const inputClass =
-  'min-h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-primary-text shadow-sm outline-none transition placeholder:text-slate-400 focus:border-accent focus:ring-2 focus:ring-accent/20 aria-[invalid=true]:border-rose-500 aria-[invalid=true]:focus:ring-rose-500/20';
+  'min-h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-primary-text shadow-sm outline-none transition placeholder:text-secondary-text focus:border-accent focus:ring-2 focus:ring-accent/20 aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20';
 
 export function EmployeeForm({
   employee,
@@ -208,20 +208,25 @@ export function EmployeeForm({
 
   return (
     <form
-      className="overflow-hidden rounded-xl border border-border bg-white"
+      className="employee-form overflow-hidden rounded-2xl border border-border bg-white shadow-sm shadow-slate-900/[0.03]"
       noValidate
       onSubmit={handleSubmit(submit)}
     >
       <div className="flex flex-col gap-3 border-b border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <div>
-          <h2 className="text-sm font-semibold text-primary-text">Employee information</h2>
-          <p className="mt-1 text-sm text-secondary-text">
+        <div className="flex items-center gap-3">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-accent">
+            <UserRound aria-hidden="true" className="size-5" />
+          </span>
+          <div>
+            <h2 className="text-base font-bold text-primary-text">Personal information</h2>
+            <p className="mt-0.5 text-sm text-secondary-text">
             Complete the employee details below. Fields marked as required must be provided.
-          </p>
+            </p>
+          </div>
         </div>
         <SampleDataButton label="Auto-fill Sample Employee" onClick={fillSampleData} />
       </div>
-      <div className="grid gap-x-5 gap-y-5 p-5 sm:grid-cols-2 sm:p-6">
+      <div className="grid gap-x-5 gap-y-5 p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
         <FormField error={fieldError('employeeId')} id="employeeId" label="Employee ID" required>
           <input
             autoComplete="off"
@@ -321,7 +326,13 @@ export function EmployeeForm({
         </FormField>
         <FormField error={fieldError('status')} id="status" label="Status" required>
           <select
-            className={inputClass}
+            className={`${inputClass} ${
+              status === 'Active'
+                ? '!border-green-200 !bg-green-50'
+                : status === 'Inactive'
+                  ? '!border-red-200 !bg-red-50'
+                  : '!border-amber-200 !bg-amber-50'
+            }`}
             id="status"
             required
             {...register('status')}
@@ -335,6 +346,34 @@ export function EmployeeForm({
             ))}
           </select>
         </FormField>
+        <div className="mt-1 flex items-center gap-3 border-t border-border pt-5 sm:col-span-2 lg:col-span-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-accent">
+            <FileText aria-hidden="true" className="size-5" />
+          </span>
+          <div>
+            <h3 className="text-base font-bold text-primary-text">Additional information</h3>
+            <p className="mt-0.5 text-sm text-secondary-text">
+              Skills and optional leave details.
+            </p>
+          </div>
+        </div>
+        <div className="sm:col-span-2 lg:col-span-3">
+          <FormField
+            error={fieldError('skillsText')}
+            hint="Separate multiple skills with commas or new lines, up to 30."
+            id="skillsText"
+            label="Skills"
+          >
+            <textarea
+              className={`${inputClass} min-h-24 py-2.5`}
+              id="skillsText"
+              placeholder="React, TypeScript, API design"
+              {...register('skillsText')}
+              aria-invalid={Boolean(errors.skillsText)}
+              aria-describedby={errors.skillsText ? 'skillsText-error' : 'skillsText-hint'}
+            />
+          </FormField>
+        </div>
         {status === 'On Leave' && (
           <>
             <FormField
@@ -371,23 +410,6 @@ export function EmployeeForm({
             </FormField>
           </>
         )}
-        <div className="sm:col-span-2">
-          <FormField
-            error={fieldError('skillsText')}
-            hint="Separate multiple skills with commas or new lines, up to 30."
-            id="skillsText"
-            label="Skills"
-          >
-            <textarea
-              className={`${inputClass} min-h-24 py-2.5`}
-              id="skillsText"
-              placeholder="React, TypeScript, API design"
-              {...register('skillsText')}
-              aria-invalid={Boolean(errors.skillsText)}
-              aria-describedby={errors.skillsText ? 'skillsText-error' : 'skillsText-hint'}
-            />
-          </FormField>
-        </div>
       </div>
       <div className="flex flex-col-reverse gap-3 border-t border-border bg-slate-50/60 px-5 py-4 sm:flex-row sm:justify-between sm:px-6">
         <Link

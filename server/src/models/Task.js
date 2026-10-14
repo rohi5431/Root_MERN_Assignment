@@ -29,7 +29,7 @@ const taskSchema = new mongoose.Schema(
     assignedEmployee: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Employee',
-      default: null,
+      required: true,
     },
     employeeSnapshot: {
       type: employeeSnapshotSchema,

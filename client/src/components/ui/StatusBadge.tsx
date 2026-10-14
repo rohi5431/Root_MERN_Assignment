@@ -4,20 +4,20 @@ type Status = Employee['status'] | Task['status'];
 type Priority = Task['priority'];
 
 const statusStyles: Record<Status, string> = {
-  Active: 'bg-emerald-50 text-emerald-700 ring-emerald-600/15',
+  Active: 'bg-green-50 text-green-700 ring-green-600/15',
   Inactive: 'bg-slate-100 text-slate-600 ring-slate-500/15',
   'On Leave': 'bg-amber-50 text-amber-700 ring-amber-600/15',
   Todo: 'bg-slate-100 text-slate-700 ring-slate-500/15',
   'In Progress': 'bg-blue-50 text-blue-700 ring-blue-600/15',
-  Completed: 'bg-emerald-50 text-emerald-700 ring-emerald-600/15',
-  Cancelled: 'bg-rose-50 text-rose-700 ring-rose-600/15',
+  Completed: 'bg-green-50 text-green-700 ring-green-600/15',
+  Cancelled: 'bg-red-50 text-red-700 ring-red-600/15',
 };
 
 const priorityStyles: Record<Priority, string> = {
   Low: 'bg-slate-100 text-slate-600 ring-slate-500/15',
   Medium: 'bg-sky-50 text-sky-700 ring-sky-600/15',
   High: 'bg-amber-50 text-amber-700 ring-amber-600/15',
-  Critical: 'bg-rose-50 text-rose-700 ring-rose-600/15',
+  Critical: 'bg-red-50 text-red-700 ring-red-600/15',
 };
 
 function Badge({ label, className }: { label: string; className: string }) {

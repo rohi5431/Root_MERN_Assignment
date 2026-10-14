@@ -50,9 +50,17 @@ function taskPayload(employeeId, overrides = {}) {
 }
 
 async function createTask(employeeId, overrides = {}) {
+  let assignedEmployeeId = employeeId;
+  if (assignedEmployeeId === undefined) {
+    const employee = await createEmployee();
+    if (employee.status !== 201) {
+      throw new Error(`Could not create task test employee: ${employee.body.message}`);
+    }
+    assignedEmployeeId = employee.body.data._id;
+  }
   const response = await request(app)
     .post('/api/tasks')
-    .send(taskPayload(employeeId, overrides));
+    .send(taskPayload(assignedEmployeeId, overrides));
   if (response.status === 201) createdTaskIds.push(response.body.data._id);
   return response;
 }
@@ -103,9 +111,11 @@ describe.skipIf(!databaseAvailable)('Task API business rules', () => {
     });
     const valid = await createTask(employee.body.data._id);
     const missing = await request(app).post('/api/tasks').send({});
+    const unassigned = await request(app).post('/api/tasks').send(taskPayload(undefined));
 
     expect(created.status).toBe(400);
     expect(valid.status).toBe(201);
+    expect(unassigned.status).toBe(400);
     expect(valid.body.data.status).toBe('Todo');
     expect(valid.body.data.completedDate).toBeUndefined();
     expect(valid.body.data.employeeSnapshot).toMatchObject({

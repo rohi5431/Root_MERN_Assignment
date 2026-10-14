@@ -110,6 +110,7 @@ describe('Task schema preparation', () => {
       department: 'QA',
       startDate: '2024-01-01',
       dueDate: '2024-01-03',
+      assignedEmployee: new mongoose.Types.ObjectId(),
       employeeSnapshot: {
         employeeId: 'EMP-100',
         fullName: 'Rohit Sharma',
@@ -121,11 +122,12 @@ describe('Task schema preparation', () => {
       department: 'QA',
       startDate: '2024-01-01',
       dueDate: '2024-01-03',
+      assignedEmployee: new mongoose.Types.ObjectId(),
     });
 
     expect(first.taskId).toMatch(/^TASK-[0-9a-f-]{36}$/i);
     expect(first.taskId).not.toBe(second.taskId);
-    expect(first.assignedEmployee).toBeNull();
+    expect(first.assignedEmployee).toBeInstanceOf(mongoose.Types.ObjectId);
     expect(first.employeeSnapshot.department).toBe('QA');
     expect(Task.schema.path('assignedEmployee').options.ref).toBe('Employee');
     expect(first.validateSync()).toBeUndefined();

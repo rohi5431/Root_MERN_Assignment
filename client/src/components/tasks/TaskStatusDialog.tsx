@@ -105,7 +105,7 @@ export function TaskStatusDialog({
             </p>
           )}
           {error && (
-            <p className="mt-3 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800" role="alert">
+            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
               {error}
             </p>
           )}

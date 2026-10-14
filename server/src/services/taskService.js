@@ -96,11 +96,9 @@ export async function createTask(input) {
   }
 
   const create = async (session) => {
-    if (data.assignedEmployee) {
-      await lockEmployees([data.assignedEmployee], session);
-    }
+    await lockEmployees([data.assignedEmployee], session);
     const employee = await validateEmployeeEligibility(data.assignedEmployee, data.startDate, session);
-    if (employee) await enforceTaskCapacity(employee._id, session);
+    await enforceTaskCapacity(employee._id, session);
 
     const task = new Task({
       ...data,
@@ -111,15 +109,7 @@ export async function createTask(input) {
     return persistTask(task);
   };
 
-  return data.assignedEmployee
-    ? withAssignmentTransaction(create)
-    : persistTask(
-        new Task({
-          ...data,
-          status: 'Todo',
-          completedDate: undefined,
-        }),
-      );
+  return withAssignmentTransaction(create);
 }
 
 export async function getTaskById(id) {
@@ -168,6 +158,9 @@ export async function updateTask(id, input) {
     const requestedEmployeeId = Object.hasOwn(patch, 'assignedEmployee')
       ? patch.assignedEmployee?.toString()
       : oldEmployeeId;
+    if (!requestedEmployeeId) {
+      throw new AppError(400, 'A task must be assigned to an employee');
+    }
     const reassigned = requestedEmployeeId !== oldEmployeeId;
     const nextStartDate = patch.startDate ?? task.startDate;
     const changedAssignmentOrStartDate =

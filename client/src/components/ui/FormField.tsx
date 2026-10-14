@@ -12,11 +12,11 @@ interface FormFieldProps {
 export function FormField({ id, label, error, children, hint, required = false }: FormFieldProps) {
   return (
     <div className="min-w-0">
-      <label className="mb-1.5 block text-sm font-medium text-primary-text" htmlFor={id}>
+      <label className="mb-1.5 block text-sm font-semibold text-slate-950" htmlFor={id}>
         {label}
         {required && (
           <>
-            <span aria-hidden="true" className="ml-0.5 text-rose-700">
+            <span aria-hidden="true" className="ml-0.5 text-red-700">
               *
             </span>
             <span className="sr-only"> (required)</span>
@@ -30,7 +30,7 @@ export function FormField({ id, label, error, children, hint, required = false }
         </p>
       )}
       {error && (
-        <p className="mt-1 text-xs text-rose-700" id={`${id}-error`}>
+        <p className="mt-1 text-xs text-red-700" id={`${id}-error`}>
           {error}
         </p>
       )}

@@ -20,7 +20,7 @@ function objectIdSchema(fieldName) {
 const requiredTaskFields = {
   title: z.string().trim().min(1).max(150),
   description: z.string().trim().max(5000).optional().default(''),
-  assignedEmployee: objectIdSchema('assigned employee ID').nullable().optional(),
+  assignedEmployee: objectIdSchema('assigned employee ID'),
   department: z.enum(DEPARTMENTS),
   priority: z.enum(TASK_PRIORITIES).default('Medium'),
   startDate: dateOnlySchema,
@@ -46,7 +46,7 @@ export const updateTaskSchema = z
   .object({
     title: requiredTaskFields.title.optional(),
     description: z.string().trim().max(5000).optional(),
-    assignedEmployee: objectIdSchema('assigned employee ID').nullable().optional(),
+    assignedEmployee: objectIdSchema('assigned employee ID').optional(),
     department: z.enum(DEPARTMENTS).optional(),
     priority: z.enum(TASK_PRIORITIES).optional(),
     startDate: dateOnlySchema.optional(),

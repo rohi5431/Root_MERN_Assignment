@@ -3,6 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
 import { ZodError } from 'zod';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 import { AppError } from './utils/appError.js';
@@ -24,6 +25,7 @@ export function createApp(clientUrl) {
     });
   });
 
+  app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/employees', employeeRoutes);
   app.use('/api/tasks', taskRoutes);
 

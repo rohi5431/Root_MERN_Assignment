@@ -100,5 +100,20 @@ export interface DashboardMetrics {
   todoTasks: number;
   cancelledTasks: number;
   overdueTasks: number;
+  completionRate: number;
+  tasksByDepartment: Record<Employee['department'], number>;
+  tasksByPriority: Record<Task['priority'], number>;
+  employeeWorkload: EmployeeWorkload[];
   recentTasks: Task[];
+  upcomingDeadlines: Task[];
+  recentDeadlines: Task[];
+}
+
+export interface EmployeeWorkload {
+  _id: string;
+  employeeId: string;
+  fullName: string;
+  department: Employee['department'];
+  status: Employee['status'];
+  activeTaskCount: number;
 }

@@ -173,7 +173,7 @@ export function TaskDetailsPage() {
                 <StatusBadge status={task.status} />
                 <PriorityBadge priority={task.priority} />
                 {task.isOverdue && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">
                     <TriangleAlert aria-hidden="true" className="size-4" />
                     Overdue
                   </span>
@@ -182,7 +182,7 @@ export function TaskDetailsPage() {
             </div>
             <div className="flex items-center gap-2 self-start rounded-lg bg-secondary-background px-3 py-2 text-xs text-secondary-text">
               {task.status === 'Completed' ? (
-                <CheckCircle2 aria-hidden="true" className="size-4 text-emerald-600" />
+                <CheckCircle2 aria-hidden="true" className="size-4 text-green-600" />
               ) : (
                 <Clock3 aria-hidden="true" className="size-4" />
               )}

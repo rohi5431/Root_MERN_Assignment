@@ -321,9 +321,9 @@ Examples are in `server/.env.example` and `client/.env.example`.
 | `PORT` | `server/.env` | API port (default `5000`) |
 | `CLIENT_URL` | `server/.env` | Allowed CORS origin; must match the frontend origin exactly (default `http://localhost:5173`) |
 | `MONGODB_TEST_URI` | `server/.env` | Disposable database for integration tests (name must end in `_test`) |
-| `VITE_API_URL` | `client/.env` | Backend API base URL |
+| `VITE_API_BASE_URL` | `client/.env` | Backend API base URL |
 
-> `VITE_API_URL` is the only client-side setting. Credentials and other secrets must stay in `server/.env` and must never use the `VITE_` prefix.
+> `VITE_API_BASE_URL` is the only client-side setting. Credentials and other secrets must stay in `server/.env` and must never use the `VITE_` prefix.
 
 ---
 
@@ -409,6 +409,15 @@ Assignment, reassignment and deletion use MongoDB transactions, so they require 
 ## API overview
 
 Base URL: `http://localhost:5000/api`
+
+### Dashboard
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/dashboard` | Server-calculated employee/task counts, completion rate, employee workload, and deadline lists |
+`GET /api/dashboard` returns employee and task counts, completion rate, overdue count, active-task workload per employee, up to five recently created tasks, and up to five upcoming and recently due deadlines. Workload and deadlines are calculated server-side from the full task collection.
+
+Analytics displays team/task metrics, task status and priority doughnut charts, and task counts by department. Workload, recent tasks, and deadlines are shown on the Dashboard only.
 
 ### Health
 
@@ -577,6 +586,19 @@ Search, filters, sorting and page number are stored in the query string, for exa
 /tasks?status=In%20Progress&priority=High&page=2
 ```
 
+## Assignment behavior and design answers
+
+1. Status changes are validated by the backend service against the allowed task transition graph.
+2. The backend sets `completedDate` when a task enters `Completed`; clients cannot set it.
+3. Inactive employees cannot be assigned tasks. Assignments starting during an employee's inclusive leave period are rejected.
+4. Search, filters, sorting, and pagination are applied on the server.
+5. Task list search, filters, sort order, and page are retained in the URL.
+6. MongoDB transactions serialize assignments and deletion against the three-active-task limit; use a replica set or Atlas.
+
+## Tests and database requirements
+
+Run `npm test` for backend tests. Employee, task, and dashboard API integration tests use `MONGODB_TEST_URI` (default `mongodb://127.0.0.1:27017/roots_management_test`) and a disposable test database. Employee and task mutation integration tests require a transaction-capable MongoDB deployment. If MongoDB is unavailable or transactions are unsupported, database-backed tests are skipped; run them against a replica set or Atlas before submission.
+
 UI notes:
 
 - The status dropdown shows only the **valid next statuses**.
@@ -665,3 +687,7 @@ Both requests could read "2 active tasks" before either writes, both pass the ca
 | 6 | Task List, Add, Details and Edit routes, status transitions, overdue data | Complete |
 | 7 | Task search/filters/sorting, URL state restoration, CSV export | Complete |
 | Extras | Analytics page, notification bell, sample autofill buttons | Complete |
+
+**Dashboard and analytics:** Dashboard displays employee workload, recent tasks, upcoming deadlines, and recently due tasks. Analytics displays aggregate metrics and charts. Notifications include overdue tasks, tasks due within seven days, and employees on leave; read/dismissed state resets on page reload. Employee and task forms include a sample autofill action; values are not saved until submitted.
+
+No authentication or AI integrations are included.

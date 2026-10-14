@@ -137,7 +137,7 @@ export function EmployeesPage() {
           <>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1050px] text-left">
-                <thead className="bg-slate-900 text-xs font-semibold uppercase tracking-[0.08em] text-white">
+                <thead className="bg-slate-100 text-xs font-bold uppercase tracking-[0.08em] text-primary-text">
                   <tr>
                     <th className="px-5 py-3">Employee ID</th>
                     <th className="px-5 py-3">Employee</th>
@@ -150,7 +150,7 @@ export function EmployeesPage() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {result.data.map((employee) => (
-                    <tr className="transition hover:bg-slate-50/70" key={employee._id}>
+                    <tr className="transition hover:bg-secondary-background" key={employee._id}>
                       <td className="whitespace-nowrap px-5 py-4 text-sm font-medium text-primary-text">
                         {employee.employeeId}
                       </td>
@@ -172,9 +172,9 @@ export function EmployeesPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-4 text-sm text-slate-600">{employee.department}</td>
-                      <td className="px-5 py-4 text-sm text-slate-600">{employee.role}</td>
-                      <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600">
+                      <td className="px-5 py-4 text-sm text-primary-text">{employee.department}</td>
+                      <td className="px-5 py-4 text-sm text-primary-text">{employee.role}</td>
+                      <td className="whitespace-nowrap px-5 py-4 text-sm text-secondary-text">
                         {formatDate(employee.joiningDate)}
                       </td>
                       <td className="px-5 py-4">
@@ -198,7 +198,7 @@ export function EmployeesPage() {
                           </Link>
                           <button
                             aria-label={`Delete ${employee.fullName}`}
-                            className={`${actionClass} hover:bg-rose-50 hover:text-rose-700`}
+                            className={`${actionClass} hover:bg-red-50 hover:text-red-700`}
                             onClick={() => {
                               setDeleteError(null);
                               setEmployeeToDelete(employee);

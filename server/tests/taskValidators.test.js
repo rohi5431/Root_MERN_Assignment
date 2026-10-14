@@ -18,6 +18,7 @@ const validTask = {
   title: 'Prepare payment report',
   department: 'Finance',
   priority: 'High',
+  assignedEmployee: '68f000000000000000000001',
   startDate: '2026-10-01',
   dueDate: '2026-10-08',
 };
@@ -69,6 +70,7 @@ describe('Task request schemas', () => {
         assignedEmployee: 'not-an-object-id',
       }).success,
     ).toBe(false);
+    expect(createTaskSchema.safeParse({ ...validTask, assignedEmployee: null }).success).toBe(false);
     expect(updateTaskSchema.safeParse({ status: 'Cancelled' }).success).toBe(false);
     expect(updateTaskSchema.safeParse({ completedDate: '2026-10-08' }).success).toBe(false);
     expect(updateTaskSchema.safeParse({}).success).toBe(false);

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, LoaderCircle, Save } from 'lucide-react';
+import { ArrowLeft, CalendarDays, ClipboardList, LoaderCircle, Save } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm, type FieldPath, type SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -45,7 +45,7 @@ interface TaskFormProps {
 }
 
 const inputClass =
-  'min-h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-primary-text shadow-sm outline-none transition placeholder:text-slate-400 focus:border-accent focus:ring-2 focus:ring-accent/20 aria-[invalid=true]:border-rose-500 aria-[invalid=true]:focus:ring-rose-500/20';
+  'min-h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-primary-text shadow-sm outline-none transition placeholder:text-secondary-text focus:border-accent focus:ring-2 focus:ring-accent/20 aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20';
 
 function assignedEmployeeId(task?: Task) {
   if (!task) return '';
@@ -94,6 +94,7 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
   });
   const startDate = watch('startDate');
   const selectedEmployeeId = watch('assignedEmployee');
+  const selectedPriority = watch('priority');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -204,16 +205,21 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
 
   return (
     <form
-      className="overflow-hidden rounded-xl border border-border bg-white"
+      className="task-form overflow-hidden rounded-2xl border border-border bg-white shadow-sm shadow-slate-900/[0.03]"
       noValidate
       onSubmit={handleSubmit(submit)}
     >
       <div className="flex flex-col gap-3 border-b border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <div>
-          <h2 className="text-sm font-semibold text-primary-text">Task information</h2>
-          <p className="mt-1 text-sm text-secondary-text">
-            New tasks are created with Todo status. Assignment availability is rechecked by the API.
-          </p>
+        <div className="flex items-center gap-3">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-accent">
+            <ClipboardList aria-hidden="true" className="size-5" />
+          </span>
+          <div>
+            <h2 className="text-base font-bold text-primary-text">Task information</h2>
+            <p className="mt-0.5 text-sm text-secondary-text">
+              New tasks start as Todo. Assignment availability is checked before saving.
+            </p>
+          </div>
         </div>
         <SampleDataButton
           disabled={employeesLoading}
@@ -222,7 +228,7 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
         />
       </div>
       {employeesError && (
-        <div className="border-b border-rose-100 bg-rose-50/60 px-5 py-3 sm:px-6">
+        <div className="border-b border-red-100 bg-red-50/60 px-5 py-3 sm:px-6">
           <StatePanel
             action={
               <button
@@ -248,7 +254,16 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
           </p>
         </div>
       )}
-      <div className="grid gap-x-5 gap-y-5 p-5 sm:grid-cols-2 sm:p-6">
+      <div className="grid gap-x-5 gap-y-5 p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
+        <div className="flex items-center gap-3 border-b border-border pb-3 sm:col-span-2 lg:col-span-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-accent">
+            <ClipboardList aria-hidden="true" className="size-[18px]" />
+          </span>
+          <div>
+            <h3 className="text-sm font-bold text-primary-text">Task details</h3>
+            <p className="mt-0.5 text-xs text-secondary-text">Title, ownership and priority</p>
+          </div>
+        </div>
         <FormField error={fieldError('title')} id="task-title" label="Task title" required>
           <input
             className={inputClass}
@@ -315,7 +330,13 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
         </FormField>
         <FormField error={fieldError('priority')} id="task-priority" label="Priority" required>
           <select
-            className={inputClass}
+            className={`${inputClass} ${
+              selectedPriority === 'Critical' || selectedPriority === 'High'
+                ? '!border-amber-200 !bg-amber-50'
+                : selectedPriority === 'Low'
+                  ? '!border-green-200 !bg-green-50'
+                  : '!border-sky-200 !bg-sky-50'
+            }`}
             id="task-priority"
             required
             {...register('priority')}
@@ -329,6 +350,15 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
             ))}
           </select>
         </FormField>
+        <div className="mt-1 flex items-center gap-3 border-b border-border pb-3 sm:col-span-2 lg:col-span-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
+            <CalendarDays aria-hidden="true" className="size-[18px]" />
+          </span>
+          <div>
+            <h3 className="text-sm font-bold text-primary-text">Schedule and context</h3>
+            <p className="mt-0.5 text-xs text-secondary-text">Set the task timeline and provide details</p>
+          </div>
+        </div>
         <FormField error={fieldError('startDate')} id="task-start-date" label="Start date" required>
           <input
             className={inputClass}
@@ -351,7 +381,7 @@ export function TaskForm({ task, submitLabel, onSubmit }: TaskFormProps) {
             aria-describedby={errors.dueDate ? 'task-due-date-error' : undefined}
           />
         </FormField>
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-2 lg:col-span-3">
           <FormField error={fieldError('description')} id="task-description" label="Description">
             <textarea
               className={`${inputClass} min-h-32 py-2.5`}

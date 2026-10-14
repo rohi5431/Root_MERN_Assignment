@@ -12,7 +12,7 @@ export function AppLayout() {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="min-w-0 flex-1">
         <Topbar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="workspace-main mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-6 lg:px-7 lg:py-8">
+        <main className="workspace-main mx-auto min-h-[calc(100vh-4.5rem)] w-full max-w-[1600px] bg-secondary-background px-4 py-6 sm:px-6 lg:px-7 lg:py-8">
           <Outlet />
         </main>
       </div>

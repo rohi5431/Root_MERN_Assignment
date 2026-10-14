@@ -85,7 +85,7 @@ function formatDate(value: string) {
 function IconForKind({ kind }: { kind: NotificationItem['kind'] }) {
   if (kind === 'overdue') {
     return (
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-700">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-700">
         <AlertTriangle aria-hidden="true" className="size-5" />
       </span>
     );
@@ -215,7 +215,7 @@ export function NotificationCenter() {
       >
         <Bell aria-hidden="true" className="size-5" />
         {unreadCount > 0 && (
-          <span className="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-[11px] font-semibold leading-none text-white ring-2 ring-white">
+          <span className="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-semibold leading-none text-white ring-2 ring-white">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -315,7 +315,7 @@ export function NotificationCenter() {
                               <span className="mt-1 block truncate text-sm text-secondary-text">
                                 {item.description}
                               </span>
-                              <span className="mt-1 block text-xs text-slate-500">
+                              <span className="mt-1 block text-xs text-secondary-text">
                                 {item.date ? formatDate(item.date) : 'Date unavailable'}
                               </span>
                             </span>
@@ -324,7 +324,7 @@ export function NotificationCenter() {
                         </Link>
                         <button
                           aria-label={`Dismiss ${item.title}`}
-                          className="rounded-md p-1.5 text-slate-400 hover:bg-white hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                          className="rounded-md p-1.5 text-secondary-text hover:bg-white hover:text-primary-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                           onClick={() => dismiss(item.id)}
                           type="button"
                         >

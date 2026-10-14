@@ -38,7 +38,7 @@ import {
 const actionClass =
   'inline-flex size-9 items-center justify-center rounded-lg text-secondary-text transition hover:bg-blue-50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent';
 const inputClass =
-  'mt-1 min-h-10 w-full rounded-lg border border-border bg-white px-3 text-sm text-primary-text outline-none transition placeholder:text-slate-400 focus:border-accent focus:ring-2 focus:ring-accent/20';
+  'mt-1 min-h-12 w-full rounded-lg border border-border bg-white px-3 text-base font-semibold text-primary-text outline-none transition placeholder:font-normal placeholder:text-secondary-text focus:border-accent focus:ring-2 focus:ring-accent/20';
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeZone: 'UTC' }).format(
@@ -255,7 +255,7 @@ export function TasksPage() {
         }
         action={pageActions}
       />
-      <section className="overflow-hidden rounded-xl border border-border bg-white">
+      <section className="w-full overflow-hidden rounded-xl border border-border bg-white shadow-sm">
         <div className="flex flex-col gap-3 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
           <div>
             <h2 className="text-sm font-semibold text-primary-text">Task list</h2>
@@ -275,12 +275,12 @@ export function TasksPage() {
           )}
         </div>
 
-        <div className="space-y-4 border-b border-border bg-slate-50/50 p-4 sm:p-5">
+        <div className="space-y-4 border-b border-border bg-secondary-background p-4 sm:p-5">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <label className="sm:col-span-2">
-              <span className="text-xs font-medium text-secondary-text">Search tasks or employees</span>
+              <span className="text-sm font-bold text-primary-text">Search tasks or employees</span>
               <span className="relative block">
-                <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+                <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-secondary-text" />
                 <input
                   aria-label="Search task titles and employee names"
                   className={`${inputClass} pl-9 pr-10`}
@@ -293,7 +293,7 @@ export function TasksPage() {
                 {searchInput && (
                   <button
                     aria-label="Clear search"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-secondary-text hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-secondary-text hover:bg-secondary-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     onClick={() => {
                       setSearchInput('');
                       updateQuery({ search: '' }, true, true);
@@ -306,7 +306,7 @@ export function TasksPage() {
               </span>
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Department</span>
+              <span className="text-sm font-bold text-primary-text">Department</span>
               <select
                 aria-label="Department filter"
                 className={inputClass}
@@ -324,7 +324,7 @@ export function TasksPage() {
               </select>
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Priority</span>
+              <span className="text-sm font-bold text-primary-text">Priority</span>
               <select
                 aria-label="Priority filter"
                 className={inputClass}
@@ -342,7 +342,7 @@ export function TasksPage() {
               </select>
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Status</span>
+              <span className="text-sm font-bold text-primary-text">Status</span>
               <select
                 aria-label="Status filter"
                 className={inputClass}
@@ -360,7 +360,7 @@ export function TasksPage() {
               </select>
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Due date from</span>
+              <span className="text-sm font-bold text-primary-text">Due date from</span>
               <input
                 aria-label="Due date from"
                 className={inputClass}
@@ -373,7 +373,7 @@ export function TasksPage() {
               />
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Due date to</span>
+              <span className="text-sm font-bold text-primary-text">Due date to</span>
               <input
                 aria-label="Due date to"
                 className={inputClass}
@@ -386,7 +386,7 @@ export function TasksPage() {
               />
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Sort by</span>
+              <span className="text-sm font-bold text-primary-text">Sort by</span>
               <select
                 className={inputClass}
                 onChange={(event) =>
@@ -401,7 +401,7 @@ export function TasksPage() {
               </select>
             </label>
             <label>
-              <span className="text-xs font-medium text-secondary-text">Sort direction</span>
+              <span className="text-sm font-bold text-primary-text">Sort direction</span>
               <select
                 className={inputClass}
                 onChange={(event) =>
@@ -486,7 +486,7 @@ export function TasksPage() {
                   <div className="mt-3 flex flex-wrap items-center gap-2">
                     <StatusBadge status={task.status} />
                     {task.isOverdue && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">
                         <TriangleAlert aria-hidden="true" className="size-3.5" />
                         Overdue
                       </span>
@@ -526,61 +526,57 @@ export function TasksPage() {
                 </article>
               ))}
             </div>
-            <div className="hidden overflow-x-auto md:block">
-              <table className="w-full min-w-[1250px] text-left">
-                <thead className="bg-slate-900 text-xs font-semibold uppercase tracking-[0.08em] text-white">
+            <div className="hidden w-full md:block">
+              <table className="w-full table-fixed text-left">
+                <thead className="bg-slate-100 text-xs font-bold uppercase tracking-[0.08em] text-primary-text">
                   <tr>
-                    <th className="px-4 py-3">Task ID</th>
-                    <th className="px-4 py-3">Task</th>
-                    <th className="px-4 py-3">Assigned employee</th>
-                    <th className="px-4 py-3">Department</th>
-                    <th className="px-4 py-3">Priority</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Start date</th>
-                    <th className="px-4 py-3">Due date</th>
-                    <th className="px-4 py-3">Due state</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="w-[25%] px-3 py-3 lg:px-4">Task</th>
+                    <th className="w-[20%] px-3 py-3 lg:px-4">Assignment</th>
+                    <th className="w-[11%] px-2 py-3 lg:px-3">Priority</th>
+                    <th className="w-[13%] px-2 py-3 lg:px-3">Status</th>
+                    <th className="w-[19%] px-2 py-3 lg:px-3">Schedule</th>
+                    <th className="w-[12%] px-2 py-3 text-right lg:px-3">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {result.data.map((task) => (
-                    <tr className="transition hover:bg-slate-50/70" key={task._id}>
-                      <td className="whitespace-nowrap px-4 py-4 text-xs font-medium text-primary-text">
-                        {task.taskId}
-                      </td>
-                      <td className="max-w-64 px-4 py-4">
-                        <p className="truncate text-sm font-medium text-primary-text">
+                    <tr className="transition hover:bg-blue-50/50" key={task._id}>
+                      <td className="px-3 py-4 lg:px-4">
+                        <p className="truncate text-sm font-semibold text-primary-text" title={task.title}>
                           {task.title}
                         </p>
+                        <p className="mt-1 truncate text-xs font-medium text-secondary-text">
+                          {task.taskId}
+                        </p>
                       </td>
-                      <td className="px-4 py-4 text-sm text-slate-600">
-                        {assignedEmployeeName(task)}
+                      <td className="px-3 py-4 text-sm font-semibold text-primary-text lg:px-4">
+                        <p className="truncate" title={assignedEmployeeName(task)}>
+                          {assignedEmployeeName(task)}
+                        </p>
+                        <p className="mt-1 truncate text-xs font-medium text-secondary-text">
+                          {task.department}
+                        </p>
                       </td>
-                      <td className="px-4 py-4 text-sm text-slate-600">{task.department}</td>
-                      <td className="px-4 py-4">
+                      <td className="px-2 py-4 lg:px-3">
                         <PriorityBadge priority={task.priority} />
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-2 py-4 lg:px-3">
                         <StatusBadge status={task.status} />
                       </td>
-                      <td className="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
-                        {formatDate(task.startDate)}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
-                        {formatDate(task.dueDate)}
-                      </td>
-                      <td className="px-4 py-4">
+                      <td className="px-2 py-4 text-xs font-medium text-primary-text lg:px-3">
+                        <p className="whitespace-nowrap">Starts {formatDate(task.startDate)}</p>
+                        <p className="mt-1 whitespace-nowrap">Due {formatDate(task.dueDate)}</p>
                         {task.isOverdue ? (
-                          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-rose-700">
-                            <TriangleAlert aria-hidden="true" className="size-4" />
+                          <span className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-red-700">
+                            <TriangleAlert aria-hidden="true" className="size-3.5 shrink-0" />
                             Overdue
                           </span>
                         ) : (
-                          <span className="text-xs text-secondary-text">On track</span>
+                          <span className="mt-1 block text-xs text-secondary-text">On track</span>
                         )}
                       </td>
-                      <td className="px-4 py-4">
-                        <div className="flex justify-end gap-1">
+                      <td className="px-2 py-4 lg:px-3">
+                        <div className="flex justify-end gap-0.5">
                           <Link
                             aria-label={`View ${task.title}`}
                             className={actionClass}

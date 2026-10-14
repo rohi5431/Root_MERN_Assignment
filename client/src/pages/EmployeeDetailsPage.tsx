@@ -119,7 +119,7 @@ export function EmployeeDetailsPage() {
               Edit employee
             </Link>
             <button
-              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 bg-white px-3 text-sm font-medium text-rose-700 hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-3 text-sm font-medium text-red-700 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
               onClick={() => {
                 setDeleteError(null);
                 setConfirmDelete(true);
@@ -151,7 +151,7 @@ export function EmployeeDetailsPage() {
             <p className="mt-1 text-sm text-secondary-text">
               {employee.role} · {employee.department}
             </p>
-            <p className="mt-1 text-xs text-slate-400">Employee ID: {employee.employeeId}</p>
+            <p className="mt-1 text-xs text-secondary-text">Employee ID: {employee.employeeId}</p>
           </div>
           <div className="flex items-center gap-2 self-start rounded-lg bg-secondary-background px-3 py-2 text-xs text-secondary-text sm:self-center">
             <CalendarDays aria-hidden="true" className="size-4" />
