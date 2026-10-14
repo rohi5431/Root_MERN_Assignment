@@ -1,0 +1,16 @@
+{
+  "name": "roots-employee-task-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Roots Media Marketing employee and task management assignment",
+  "scripts": {
+    "dev": "concurrently --kill-others -n client,server -c blue,green \"npm:dev:client\" \"npm:dev:server\"",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "build": "npm --prefix client run build",
+    "test": "npm --prefix server test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

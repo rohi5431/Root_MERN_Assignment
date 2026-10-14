@@ -1,0 +1,165 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary-background: #ffffff;
+  --color-secondary-background: #f7f8fc;
+  --color-primary-text: #0f172a;
+  --color-secondary-text: #64748b;
+  --color-border: #e2e8f0;
+  --color-accent: #2563eb;
+  --color-accent-soft: #eff6ff;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+}
+
+html {
+  font-size: clamp(16px, 1.04vw, 17px);
+}
+
+:root {
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-primary-text);
+  background: var(--color-secondary-background);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 85% 0%, rgb(237 233 254 / 34%), transparent 34rem),
+    radial-gradient(ellipse at 8% 14%, rgb(224 231 255 / 20%), transparent 30rem),
+    var(--color-secondary-background);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+a[href],
+select {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+button:not(:disabled):active,
+a[href]:active {
+  transform: translateY(1px);
+}
+
+@layer utilities {
+  .text-xs {
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+  }
+
+  .text-sm {
+    font-size: 0.9375rem;
+    line-height: 1.45rem;
+  }
+
+  .text-base {
+    font-size: 1.0625rem;
+    line-height: 1.65rem;
+  }
+
+  .text-lg {
+    font-size: 1.1875rem;
+    line-height: 1.8rem;
+  }
+
+  .text-xl {
+    font-size: 1.375rem;
+    line-height: 1.9rem;
+  }
+
+  .text-2xl {
+    font-size: 1.75rem;
+    line-height: 2.15rem;
+  }
+
+  .text-3xl {
+    font-size: 2.125rem;
+    line-height: 2.5rem;
+  }
+}
+
+main.workspace-main .text-xs {
+  font-size: 0.875rem;
+  line-height: 1.35rem;
+}
+
+main.workspace-main .text-sm {
+  font-size: 1rem;
+  line-height: 1.55rem;
+}
+
+main.workspace-main .text-base {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+main.workspace-main .text-lg {
+  font-size: 1.25rem;
+  line-height: 1.9rem;
+}
+
+main.workspace-main .text-xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+main.workspace-main .text-2xl {
+  font-size: 1.9rem;
+  line-height: 2.3rem;
+}
+
+main.workspace-main .text-3xl {
+  font-size: 2.25rem;
+  line-height: 2.65rem;
+}
+
+main.workspace-main input:not([type='checkbox']):not([type='radio']),
+main.workspace-main select {
+  min-height: 3rem;
+  font-size: 1rem;
+}
+
+main.workspace-main textarea {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+main.workspace-main button[class*='min-h-'] {
+  min-height: 2.875rem;
+}
+
+main.workspace-main table th,
+main.workspace-main table td {
+  padding: 0.9rem 1rem;
+}
+
+::selection {
+  color: #0f172a;
+  background: #dbeafe;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
