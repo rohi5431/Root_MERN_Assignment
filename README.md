@@ -33,7 +33,6 @@ A full-stack **MERN** app (MongoDB, Express, React, Node.js) built for the Roots
 13. [Troubleshooting](#troubleshooting)
 14. [Design decisions (assignment Q&A)](#design-decisions-assignment-qa)
 15. [Assumptions](#assumptions)
-16. [Implementation status](#implementation-status)
 
 ---
 
