@@ -9,7 +9,7 @@ A full-stack **MERN** app (MongoDB, Express, React, Node.js) built for the Roots
 
 | | |
 | --- | --- |
-| **Frontend** | Not deployed yet |
+| **Frontend** | https://root-mern-assignment-2.onrender.com|
 | **Backend** | https://root-mern-assignment-1.onrender.com |
 | **Repository** | <https://github.com/rohi5431/Root_MERN_Assignment> |
 | **Author** | Not specified |
