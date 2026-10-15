@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import { z } from 'zod';
 import { createApp } from './app.js';
 
+const HOST = '0.0.0.0';
+
 const environmentSchema = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(5000),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -33,7 +35,7 @@ export async function startServer() {
   await mongoose.connect(config.MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
 
   const app = createApp(config.CLIENT_URL);
-  const server = app.listen(config.PORT, '127.0.0.1');
+  const server = app.listen(config.PORT, HOST);
 
   try {
     await new Promise((resolveListening, rejectListening) => {
@@ -42,10 +44,10 @@ export async function startServer() {
     });
   } catch (error) {
     await mongoose.disconnect();
-    throw new Error(`Unable to listen on 127.0.0.1:${config.PORT}: ${error.message}`);
+    throw new Error(`Unable to listen on port ${config.PORT}: ${error.message}`);
   }
 
-  console.info(`API listening on http://127.0.0.1:${config.PORT}`);
+  console.info(`API listening on ${HOST}:${config.PORT}`);
 
   let shuttingDown = false;
 

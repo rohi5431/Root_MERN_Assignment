@@ -4,10 +4,10 @@ A full-stack **MERN** application (MongoDB, Express, React, Node.js) built for t
 
 | | |
 | --- | --- |
-| **Frontend (live)** | `<add deployed frontend URL>` |
-| **Backend (live)** | `<add deployed backend URL>` |
-| **Repository** | `<add Git repository URL>` |
-| **Author** | `<FirstName LastName>` |
+| **Frontend** | Not deployed yet |
+| **Backend** | Not deployed yet |
+| **Repository** | <https://github.com/rohi5431/Root_MERN_Assignment> |
+| **Author** | Not specified |
 
 ---
 
@@ -19,21 +19,22 @@ A full-stack **MERN** application (MongoDB, Express, React, Node.js) built for t
 4. [Project structure](#project-structure)
 5. [Getting started](#getting-started)
 6. [Environment variables](#environment-variables)
-7. [Data model and Employee → Task relationship](#data-model-and-employee--task-relationship)
-8. [Business rules](#business-rules)
-9. [API overview](#api-overview)
-10. [Frontend routes and URL-driven state](#frontend-routes-and-url-driven-state)
-11. [Testing](#testing)
-12. [Troubleshooting](#troubleshooting)
-13. [Design decisions (assignment Q&A)](#design-decisions-assignment-qa)
-14. [Assumptions](#assumptions)
-15. [Implementation status](#implementation-status)
+7. [Deployment](#deployment)
+8. [Data model and Employee → Task relationship](#data-model-and-employee--task-relationship)
+9. [Business rules](#business-rules)
+10. [API overview](#api-overview)
+11. [Frontend routes and URL-driven state](#frontend-routes-and-url-driven-state)
+12. [Testing](#testing)
+13. [Troubleshooting](#troubleshooting)
+14. [Design decisions (assignment Q&A)](#design-decisions-assignment-qa)
+15. [Assumptions](#assumptions)
+16. [Implementation status](#implementation-status)
 
 ---
 
 ## Features
 
-- **Employee management**: create, view, edit and delete employees with search, filters, sorting and server-side pagination.
+- **Employee management**: create, view, edit and delete employees; the paginated employee API supports search, department/status filters and sorting.
 - **Task management**: create, view and edit tasks, with a server-owned status workflow.
 - **Business rules on the backend**: Active-only assignment, leave-period checks, date validation, status transitions, 3-active-task capacity and delete protection.
 - **Overdue tracking**: one shared helper keeps overdue results consistent across list, details, dashboard and CSV.
@@ -324,6 +325,45 @@ Examples are in `server/.env.example` and `client/.env.example`.
 | `VITE_API_BASE_URL` | `client/.env` | Backend API base URL |
 
 > `VITE_API_BASE_URL` is the only client-side setting. Credentials and other secrets must stay in `server/.env` and must never use the `VITE_` prefix.
+
+---
+
+## Deployment
+
+The repository includes a [Render Blueprint](./render.yaml) for the API and a [Netlify configuration](./netlify.toml) for the single-page frontend. The database must be a transaction-capable MongoDB deployment such as MongoDB Atlas; local file storage is not used.
+
+### 1. Prepare MongoDB
+
+Create an Atlas database user with access only to the application database. Add the API host's outbound IP addresses to the Atlas network access list, and copy the connection URI. Keep this URI private.
+
+### 2. Create the Netlify site and note its URL
+
+Import the repository into Netlify. Its site URL is available as soon as the site is created; keep that exact origin for the API's `CLIENT_URL` setting. The site can be built before the API is available, but task/employee requests will work only after the frontend API URL is configured in step 4.
+
+### 3. Deploy the API to Render
+
+Create a Render Blueprint deployment from the repository using `render.yaml`. Provide:
+
+- `MONGODB_URI`: the private Atlas connection URI.
+- `CLIENT_URL`: the exact public origin of the Netlify site, including `https://` and without a trailing slash.
+
+The blueprint builds with `npm ci`, starts with `npm start`, and checks `/api/health`. Render supplies `PORT`; the server listens on all network interfaces.
+
+### 4. Configure and deploy the frontend
+
+Netlify uses `netlify.toml` to build `client/` and publish `client/dist/`. Set this build environment variable in Netlify, then trigger a deploy:
+
+| Variable | Value |
+| --- | --- |
+| `VITE_API_BASE_URL` | `https://<your-render-api-host>/api` |
+
+Because Vite embeds this value at build time, trigger a new build after changing it. Netlify's rewrite rule serves the app entry point for direct navigation and refreshes on nested routes.
+
+### 5. Verify the deployment
+
+Open `https://<your-render-api-host>/api/health` and confirm it returns HTTP 200 with `"database": "connected"`. Then open the Netlify site and verify employee/task create, edit, status transitions, filters, CSV export, and refresh on a nested route. If the browser reports a CORS error, confirm Render's `CLIENT_URL` exactly matches the Netlify origin and redeploy the API.
+
+The assignment intentionally has no authentication. Treat a public deployment as a demo with non-sensitive data; do not enter real employee information or use it as a production system without adding authentication and authorization.
 
 ---
 
@@ -622,7 +662,7 @@ npm run build                     # production build
 - If MongoDB is unavailable or does not support transactions, the database integration tests are **skipped with a warning**.
 - Schema, validator, route-validation, health and overdue-helper tests run without MongoDB.
 
-Latest verification in this workspace: `npm test` reported **32 passed** and **38 database integration tests skipped** because MongoDB was not available. `npm run build`, `npm --prefix client run lint` and server syntax checks passed. Run the database-backed tests against a transaction-capable deployment before relying on runtime behavior.
+Latest verification in this workspace: `npm test` reported **39 passed** and **40 database integration tests skipped** because MongoDB was not available. `npm run build` and `npm --prefix client run lint` passed. The production build reports a large-chunk warning; the main JavaScript bundle is about 565 kB before gzip. Run the database-backed tests against a transaction-capable deployment before relying on runtime behavior.
 
 ---
 
