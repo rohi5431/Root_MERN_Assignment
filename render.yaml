@@ -1,4 +1,6 @@
+
 services:
+  # Backend API - Node.js + Express
   - type: web
     name: roots-employee-task-manager-api
     runtime: node
@@ -13,3 +15,18 @@ services:
         sync: false
       - key: CLIENT_URL
         sync: false
+
+  # Frontend - React + Vite
+  - type: web
+    name: roots-employee-task-manager-client
+    runtime: static
+    rootDir: client
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://root-mern-assignment-1.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
