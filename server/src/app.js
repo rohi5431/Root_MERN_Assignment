@@ -12,7 +12,26 @@ export function createApp(clientUrl) {
   const app = express();
 
   app.use(helmet());
-  app.use(cors({ origin: clientUrl }));
+  const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.CLIENT_URL,
+  clientUrl,
+  ]
+  .filter(Boolean)
+  .map((url) => url.replace(/\/+$/, ''));
+
+  app.use(
+   cors({
+     origin(origin, callback) {
+       // Allow requests without an Origin header, such as health checks.
+       if (!origin || allowedOrigins.includes(origin.replace(/\/+$/, ''))) {
+         return callback(null, true);
+       }
+
+       return callback(new Error('Origin not allowed by CORS'));
+     },
+   })
+  );
   app.use(express.json());
 
   app.get('/api/health', (_request, response) => {
